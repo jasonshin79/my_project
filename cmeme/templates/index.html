@@ -1,0 +1,300 @@
+<!Doctype html>
+<html lang="ko">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <title>Chaghan Meme</title>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+    <!-- style -->
+    <style type="text/css">
+        * {
+            font-family: "Stylish", sans-serif;
+        }
+
+        html, body {
+            margin: 0;
+            height: 100%;
+        }
+
+        .nav {
+            height: 60px;
+            background-color: white;
+            font-size: 28px;
+            padding-top: 8px;
+            padding-left: 30px;
+        }
+
+        hr {
+            display: block;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            border-style: double;
+            border-color: bisque;
+        }
+
+        .content {
+            height: calc(100% - 60px);
+            background-color: white;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .side {
+            width: 250px;
+            height: 100%;
+            background-color: antiquewhite;
+            text-align: center;
+            font-size: 28px;
+            padding-top: 30px;
+        }
+
+        .main {
+            width: calc(100% - 250px);
+            height: 100%;
+            background-color: white;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
+            overflow-y: scroll;
+        }
+
+        .jumbotron {
+            text-align: center;
+        }
+
+        #post-box {
+            width: 400px;
+            margin-left: 20px;
+            padding: 50px;
+            border: black solid;
+            border-radius: 3px;
+        }
+
+        .card {
+            width: 300px;
+            height: 300px;
+            margin: 16px;
+            background-color: indianred;
+        }
+
+        /* width가 400px이하인 경우에 적용 */
+        @media (max-width: 400px) {
+            .side {
+                display: none; /* 화면에서 숨기기 */
+            }
+
+            .main {
+                width: 100%;
+            }
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#cards-box").html("");
+            showMemes();
+        });
+
+        function openClose() {
+            // id 값 post-box의 display 값이 block 이면(= 눈에 보이면)
+            if ($("#post-box").css("display") == "block") {
+                // post-box를 가리고
+                $("#post-box").hide();
+                // 다시 버튼을 클릭하면, 박스 열기를 할 수 있게 텍스트 바꿔두기
+                $("#btn-post-box").text("포스팅 시작하기");
+            } else {
+                // 아니면(눈에 보이지 않으면) post-box를 펴라
+                $("#post-box").show();
+                // 다시 버튼을 클릭하면, 박스 닫기를 할 수 있게 텍스트 바꿔두기
+                $("#btn-post-box").text("포스팅 종료하기");
+            }
+        }
+
+        function postMeme() {
+            let title = $('#post-title').val()
+            let url = $('#post-url').val()
+            let comment = $('#post-comment').val()
+
+            if (title === '') {
+                alert('제목을 입력해주세요')
+                return
+            }
+            if (url === '') {
+                alert('url을 입력해주세요')
+                return
+            }
+            if (comment === '') {
+                alert('코멘트를 입력해주세요')
+                return
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/meme",
+                data: {'title_give': title, 'url_give': url, 'comment_give': comment},
+                success: function (response) {
+                    if (response["result"] === "success") {
+                        alert(response["msg"]);
+                        location.reload()
+                    }
+                }
+            })
+        }
+
+        function showMemes() {
+            $.ajax({
+                type: "GET",
+                url: "/meme",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let memes = response['data']
+                        for (let i = 0; i < memes.length; i++) {
+                            let title = memes[i]['title']
+                            let url = memes[i]['url']
+                            let comment = memes[i]['comment']
+
+                            let temp = `<div class="card">
+                                            <img class="card-img-top"
+                                                 src="${image}"
+                                                 alt="Card image cap">
+                                            <div class="card-body">
+                                                <a href="${url}" class="card-title">${title}</a>
+                                                <p class="card-text">${desc}</p>
+                                                <p class="card-text comment">${comment}</p>
+                                            </div>
+                                        </div>`
+                            $('#cards-box').append(temp)
+                        }
+
+                    }
+                }
+            })
+        }
+        function makeCard(title, url, comment) { }
+    </script>
+
+</head>
+
+<body>
+<div class="nav">ChaghanMeme</div>
+<hr>
+<div class="content">
+    <div class="side">
+        <p>홈</p>
+        <p>구독</p>
+        <p>보관</p>
+    </div>
+    <div class="main">
+        <div class="jumbotron">
+            <h1 class="display-4">착한 밈, 그리고 더 나은 세상</h1>
+            <p class="lead">더 나은 세상을 위해 여러분들의 착한 밈들을 공유해 주세요!</p>
+            <hr class="my-4">
+            <p class="lead">
+                <button onclick="openClose()" id="btn-post-box" type="button" class="btn btn-primary">포스팅 시작하기
+                </button>
+            </p>
+        </div>
+        <div id="post-box" class="form-post" style="display:none">
+            <div>
+                <div class="form-group">
+                    <label for="post-title">밈 제목</label>
+                    <input id="post-title" class="form-control" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="post-url">밈 URL</label>
+                    <input id="post-url" class="form-control" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="post-comment">코멘트</label>
+                    <textarea id="post-comment" class="form-control" rows="2"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="postMeme()">저장</button>
+            </div>
+        </div>
+        <div id="cards-box" class="card-columns">
+            <div class="card">
+                <img class="card-img-top"
+                     src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
+                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
+                    <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img class="card-img-top"
+                     src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
+                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
+                    <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img class="card-img-top"
+                     src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
+                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
+                    <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img class="card-img-top"
+                     src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
+                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
+                    <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img class="card-img-top"
+                     src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
+                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
+                    <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img class="card-img-top"
+                     src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
+                    <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
+                    <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+
+</html>
