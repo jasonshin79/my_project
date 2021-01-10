@@ -13,6 +13,21 @@ db = client.dbproject  #'dbproject'라는 이름의 db를 만들거나 사용합
 def home():
     return render_template('index.html')
 
+@app.route('/')
+def upload():
+    return render_template('index_upload.html')
+
+@app.route('/')
+def account():
+    return render_template('index_account.html')
+
+@app.route('/')
+def subscribe():
+    return render_template('index_subscribe.html')
+
+@app.route('/')
+def keep():
+    return render_template('index_keep.html')
 
 @app.route('/meme', methods=['POST'])
 def post_Meme():
@@ -28,9 +43,9 @@ def post_Meme():
 
     soup = BeautifulSoup(data.text, 'html.parser')
 
-    title = soup.select_one('meta[property="og:title"]')['content']
-    url = soup.select_one('meta[property="og:url"]')['content']
-    comment = soup.select_one('meta[property="og:comment"]')['content']
+    # title = soup.select_one('meta[property="og:title"]')['content']
+    # url = soup.select_one('meta[property="og:url"]')['content']
+    # comment = soup.select_one('meta[property="og:comment"]')['content']
 
     # 3. mongoDB에 데이터 넣기
     doc = {'title': title_receive, 'url': url_receive, 'comment': comment_receive}
