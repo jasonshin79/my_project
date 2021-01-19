@@ -1,11 +1,12 @@
 <!Doctype html>
+<html lang="ko">
 
 <head>
     {% include '/widget/header.html' %}
 
     <style type="text/css">
         * {
-            font-family: 'Roboto Condensed', sans-serif;
+            font-family: 'Sunflower', sans-serif;
         }
 
         html, body {
@@ -34,24 +35,17 @@
 
         .card {
             width: 360px;
-            height: 350px;
+            height: 330px;
             margin: 15px;
             background-color: aliceblue;
         }
 
-        .icon {
-            border: none;
-            background: none;
-        }
-
-        #icon {
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-        }
-
         /* width가 400px이하인 경우에 적용 */
         @media (max-width: 400px) {
+            .side {
+                display: none; /* 화면에서 숨기기 */
+            }
+
             .main {
                 width: 100%;
             }
@@ -76,7 +70,6 @@
                             let title = memes[i]['title']
                             let url = memes[i]['url']
                             let comment = memes[i]['comment']
-                            let like = memes[i]['like']
 
                             let temp = `<div class="card">
                                             <iframe class="card-img-top" width="360" height="200"
@@ -85,33 +78,10 @@
                                             <div class="card-body">
                                                 <a href="${url}" class="card-title">${title}</a>
                                                 <p class="card-text">${comment}</p>
-                                                <button class="icon" onclick="like('${url}','${i}')"><img id="icon" src="{{ url_for('static', filename='heart.png') }}"/>
-                                                <span id="like-${i}">${like}</span></button>
-                                                <button class="icon"><img id="icon" src="{{ url_for('static', filename='bubbleComment.png') }}"/>
-                                                </button>
-                                                <button class="icon"><img id="icon" src="{{ url_for('static', filename='share.png') }}"/>
-                                                </button>
                                             </div>
                                         </div>`
                             $('#cards-box').append(temp)
                         }
-                    }
-                }
-            })
-        }
-
-        function like(url, i) {
-            $.ajax({
-                type: "POST",
-                url: "/like",
-                data: {'url_give': url},
-                success: function (response) {
-                    if (response["result"] == "success") {
-                        let msg = response['msg']
-                        alert(msg)
-                        let currentLike = Number($(`#like-${i}`).text())
-                        console.log(currentLike)
-                        $(`#like-${i}`).text(currentLike + 1)
                     }
                 }
             })
@@ -123,9 +93,6 @@
 {% include '/widget/navbar.html' %}
 <div class="content">
     {% include '/widget/sidebar.html' %}
-    <div class="main">
-        <div id="cards-box" class="card-columns"></div>
-    </div>
 </div>
 </body>
 

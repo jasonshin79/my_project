@@ -5,29 +5,30 @@ from pymongo import MongoClient  # pymongo를 임포트 하기(패키지 인스�
 
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)  #mongoDB는 27017 포트로 돌아갑니다.
-db = client.dbproject  #'dbproject'라는 이름의 db를 만들거나 사용합니다.
+# client = MongoClient('localhost', 27017)  # mongoDB는 27017 포트로 돌아갑니다.
+client = MongoClient('mongodb://test:test@localhost', 27017)
+db = client.dbproject  # 'dbproject'라는 이름의 db를 만들거나 사용합니다.
 
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route('/')
+@app.route('/upload')
 def upload():
-    return render_template('index_upload.html')
+    return render_template('upload.html')
 
-@app.route('/')
+@app.route('/account')
 def account():
-    return render_template('index_account.html')
+    return render_template('account.html')
 
-@app.route('/')
+@app.route('/subscribe')
 def subscribe():
-    return render_template('index_subscribe.html')
+    return render_template('subscribe.html')
 
-@app.route('/')
+@app.route('/keep')
 def keep():
-    return render_template('index_keep.html')
+    return render_template('keep.html')
 
 @app.route('/meme', methods=['POST'])
 def post_Meme():
@@ -47,8 +48,12 @@ def post_Meme():
     # url = soup.select_one('meta[property="og:url"]')['content']
     # comment = soup.select_one('meta[property="og:comment"]')['content']
 
+    # youtube watch -> embed
+    if 'watch?v=' in url_receive:
+        url_receive = url_receive.replace('watch?v=', 'embed/')
+
     # 3. mongoDB에 데이터 넣기
-    doc = {'title': title_receive, 'url': url_receive, 'comment': comment_receive}
+    doc = {'title': title_receive, 'url': url_receive, 'comment': comment_receive, 'like': 0, 'dislike': 0}
     db.memes.insert_one(doc)
 
     return jsonify({'result': 'success', 'msg': '밈 업로드 완료!'})
@@ -61,6 +66,13 @@ def read_Memes():
 
     # 2. memes라는 키 값으로 memes 정보 보내주기
     return jsonify({'result': 'success', 'data': meme_list})
+
+
+@app.route('/like', methods=['POST'])
+def like_Memes():
+    url_receive = request.form['url_give']
+    db.memes.update_one({'url': url_receive}, {'$inc': {'like': 1}})
+    return jsonify({'result': 'success', 'msg': '여러분의 <좋아요>가 더 나은 세상을 만듭니다!'})
 
 
 if __name__ == '__main__':

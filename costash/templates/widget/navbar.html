@@ -1,0 +1,91 @@
+<style>
+    .nav {
+        height: 60px;
+        background-color: white;
+        font-size: 21px;
+        padding-top: 10px;
+        padding-left: 30px;
+        padding-right: 30px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .logo {
+        color: inherit;
+    }
+
+    .logo:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .icon {
+        cursor: pointer;
+    }
+
+    .sr {
+        width: 420px;
+        height: 40px;
+        border: 1px solid #1b5ac2;
+        background: #ffffff;
+    }
+
+    .sr_input {
+        width: 360px;
+        padding: 7px;
+        font-size: 16px;
+        text-align: left;
+        border: 0px;
+        outline: none;
+        float: left;
+    }
+
+    .sr_button {
+        height: 100%;
+        width: 40px;
+        border: 0px;
+        background: #1b5ac2;
+        outline: none;
+        float: right;
+    }
+
+    #search {
+        height: 28px;
+        width: 28px;
+    }
+
+    hr {
+        display: block;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        border-style: double;
+        border-color: lightgray;
+    }
+</style>
+
+<div class="nav">
+    <a href="/" class="logo">
+        <img src="{{ url_for('static', filename='brain.png') }}" alt="" class="icon" onclick="clickBTN" width="50"
+             height="42"/>
+        &nbsp; ChaghanMeme
+    </a>
+
+    <div class="sr">
+        <input class="sr_input" type="text" placeholder="검색">
+        <button class="sr_button"><img id="search" src="{{ url_for('static', filename='search_white.png') }}"/></button>
+    </div>
+
+    <div class="nav_right">
+        <a href="/upload">
+            <img src="{{ url_for('static', filename='memeload.png') }}" alt="" class="icon" onclick="clickBTN"
+                 width="40" height="40"/>
+        </a>
+        &nbsp;
+        <a href="/account">
+            <img id="account" src="{{ url_for('static', filename='account.png') }}" alt="" class="icon"
+                 onclick="clickBTN"
+                 width="40" height="40"/>
+        </a>
+    </div>
+</div>
+<hr>

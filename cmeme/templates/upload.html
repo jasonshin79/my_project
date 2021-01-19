@@ -2,26 +2,8 @@
 <html lang="ko">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% include '/widget/header.html' %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
-
-    <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-
-    <title>Chaghan Meme</title>
-
-    <!-- 구글폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap" rel="stylesheet">
-    <!-- style -->
     <style type="text/css">
         * {
             font-family: 'Sunflower', sans-serif;
@@ -30,58 +12,6 @@
         html, body {
             margin: 0;
             height: 100%;
-        }
-
-        .nav {
-            height: 60px;
-            background-color: white;
-            font-size: 28px;
-            padding-top: 8px;
-            padding-left: 30px;
-        }
-
-        .icon {
-            cursor: pointer;
-        }
-
-        .sr {
-            height: 40px;
-            width: 400px;
-            border: 1px solid #1b5ac2;
-            background: #ffffff;
-        }
-
-        .sr_input {
-            width: 325px;
-            padding: 7px;
-            font-size: 16px;
-            text-align: left;
-            border: 0px;
-            outline: none;
-            float: left;
-        }
-
-        .sr_button {
-            height: 100%;
-            width: 40px;
-            border: 0px;
-            background: #1b5ac2;
-            outline: none;
-            float: right;
-        }
-
-        #search {
-            height: 28px;
-            width: 28px;
-            padding-bottom: 5px;
-        }
-
-        hr {
-            display: block;
-            margin-top: 0px;
-            margin-bottom: 0px;
-            border-style: double;
-            border-color: lightgray;
         }
 
         .content {
@@ -147,6 +77,7 @@
             }
         }
     </style>
+
     <script>
         $(document).ready(function () {
             $("#cards-box").html("");
@@ -237,28 +168,7 @@
 </head>
 
 <body>
-<div class="nav">
-    <a href="https://ko.wikipedia.org/wiki/%EB%B0%88">
-        <img src="{{ url_for('static', filename='brain.png') }}" alt="" class="icon" onclick="clickBTN" width="60"
-             height="50"/>
-    </a>
-    &nbsp; ChaghanMeme &nbsp;
-    <div class="sr">
-        <input class="sr_input" type="text" placeholder="검색">
-        <button class="sr_button"><img id="search" src="{{ url_for('static', filename='search_white.png') }}"/></button>
-    </div>
-    &nbsp;
-    <a href="https://ko.wikipedia.org/wiki/%EB%B0%88">
-        <img src="{{ url_for('static', filename='memeload.png') }}" alt="" class="icon" onclick="clickBTN"
-             width="40" height="40"/>
-    </a>
-    &nbsp;
-    <a href="https://ko.wikipedia.org/wiki/%EB%B0%88">
-        <img id="account" src="{{ url_for('static', filename='account.png') }}" alt="" class="icon" onclick="clickBTN"
-             width="40" height="40"/>
-    </a>
-</div>
-<hr>
+{% include '/widget/navbar.html' %}
 <div class="content">
     <div class="side">
         <p class="a">밈 영상 업로드</p>

@@ -1,0 +1,56 @@
+<!Doctype html>
+<html lang="ko">
+
+<head>
+    {% include '/widget/header.html' %}
+
+    <style type="text/css">
+        * {
+            font-family: 'Sunflower', sans-serif;
+        }
+
+        html, body {
+            margin: 0;
+            height: 100%;
+        }
+
+        .content {
+            height: calc(100% - 60px);
+            background-color: white;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .main {
+            width: calc(100% - 250px);
+            height: 100%;
+            background-color: white;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
+            overflow-y: scroll;
+        }
+
+        .card {
+            width: 360px;
+            height: 330px;
+            margin: 15px;
+            background-color: aliceblue;
+        }
+
+        /* width가 400px이하인 경우에 적용 */
+        @media (max-width: 400px) {
+            .main {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+{% include '/widget/navbar.html' %}
+</body>
+
+</html>

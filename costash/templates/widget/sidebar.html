@@ -1,0 +1,49 @@
+<style>
+    .side {
+        width: 240px;
+        height: 100%;
+        background-color: ghostwhite;
+        font-size: 23px;
+        padding-top: 50px;
+        padding-left: 50px;
+    }
+
+    .logo {
+        color: inherit;
+    }
+
+    .logo:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    @media (max-width: 400px) {
+        .side {
+            display: none; /* 화면에서 숨기기 */
+        }
+    }
+</style>
+
+<div class="side">
+    <p>
+        <a href="/" class="logo">
+            <img src="{{ url_for('static', filename='home01.png') }}" alt="" class="icon" onclick="clickBTN"
+                 width="36" height="36"/>
+            &nbsp; 홈
+        </a>
+    </p>
+    <p>
+        <a href="/subscribe" class="logo">
+            <img src="{{ url_for('static', filename='subscribe01.png') }}" alt="" class="icon" onclick="clickBTN"
+                 width="36" height="36"/>
+            &nbsp; 구독
+        </a>
+    </p>
+    <p>
+        <a href="/keep" class="logo">
+            <img src="{{ url_for('static', filename='keep01.png') }}" alt="" class="icon" onclick="clickBTN"
+                 width="36" height="36"/>
+            &nbsp; 보관
+        </a>
+    </p>
+</div>
