@@ -28,7 +28,7 @@
             margin-top: 20px;
             display: flex;
             flex-direction: row;
-            justify-content: center;
+            justify-content: space-between;
             flex-wrap: wrap;
             overflow-y: scroll;
         }
@@ -38,6 +38,11 @@
             height: 350px;
             margin: 15px;
             background-color: aliceblue;
+        }
+
+        .card-list {
+            display: flex;
+            flex-wrap: wrap;
         }
 
         .icon {
@@ -65,41 +70,39 @@
             showMemes('');
         });
 
-        // function showMemes() {
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "/meme",
-        //         data: {},
-        //         success: function (response) {
-        //             if (response["result"] == "success") {
-        //                 let memes = response['data']
-        //                 for (let i = 0; i < memes.length; i++) {
-        //                     let title = memes[i]['title']
-        //                     let url = memes[i]['url']
-        //                     let comment = memes[i]['comment']
-        //                     let like = memes[i]['like']
-        //
-        //                     let temp = `<div class="card">
-        //                                     <iframe class="card-img-top" width="360" height="200"
-        //                                             src="${url}" alt="Card image cap">
-        //                                     </iframe>
-        //                                     <div class="card-body">
-        //                                         <a href="${url}" class="card-title">${title}</a>
-        //                                         <p class="card-text">${comment}</p>
-        //                                         <button class="icon" onclick="like('${url}','${i}')"><img id="icon" src="{{ url_for('static', filename='heart.png') }}"/>
-        //                                         <span id="like-${i}">${like}</span></button>
-        //                                         <button class="icon"><img id="icon" src="{{ url_for('static', filename='bubbleComment.png') }}"/>
-        //                                         </button>
-        //                                         <button class="icon"><img id="icon" src="{{ url_for('static', filename='share.png') }}"/>
-        //                                         </button>
-        //                                     </div>
-        //                                 </div>`
-        //                     $('#cards-box').append(temp)
-        //                 }
-        //             }
-        //         }
-        //     })
-        // }
+        function showMemes() {
+            $.ajax({
+                type: "GET",
+                url: "/meme",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let memes = response['data']
+                        for (let i = 0; i < memes.length; i++) {
+                            let title = memes[i]['title']
+                            let url = memes[i]['url']
+                            let comment = memes[i]['comment']
+                            let like = memes[i]['like']
+
+                            let temp = `<div class="card">
+                                            <iframe class="card-img-top" width="360" height="200"
+                                                    src="${url}" alt="Card image cap">
+                                            </iframe>
+                                            <div class="card-body">
+                                                <a href="${url}" class="card-title">${title}</a>
+                                                <p class="card-text">${comment}</p>
+                                                <button class="icon" onclick="like('${url}','${i}')"><img id="icon" src="{{ url_for('static', filename='heart.png') }}"/>
+                                                <span id="like-${i}">${like}</span></button>
+                                                <!--<button class="icon"><img id="icon" src="{{ url_for('static', filename='bubbleComment.png') }}"/></button>-->
+                                                <button class="icon"><img id="icon" src="{{ url_for('static', filename='share.png') }}"/></button>
+                                            </div>
+                                        </div>`
+                            $('#cards-box').append(temp)
+                        }
+                    }
+                }
+            })
+        }
 
         function like(url, i) {
             $.ajax({
@@ -125,7 +128,7 @@
 <div class="content">
     {% include '/widget/sidebar.html' %}
     <div class="main">
-        <div id="cards-box" class="card-columns"></div>
+        <div id="cards-box" class="card-list"></div>
     </div>
 </div>
 </body>
