@@ -71,8 +71,8 @@
     </a>
 
     <div class="sr">
-        <input class="sr_input" type="text" placeholder="검색">
-        <button class="sr_button"><img id="search" src="{{ url_for('static', filename='search_white.png') }}"/></button>
+        <input id="keyword" class="sr_input" type="text" placeholder="검색">
+        <button onclick="showMemes($('#keyword').val())" class="sr_button"><img id="search" src="{{ url_for('static', filename='search_white.png') }}"/></button>
     </div>
 
     <div class="nav_right">

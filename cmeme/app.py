@@ -5,8 +5,8 @@ from pymongo import MongoClient  # pymongo를 임포트 하기(패키지 인스�
 
 app = Flask(__name__)
 
-# client = MongoClient('localhost', 27017)  # mongoDB는 27017 포트로 돌아갑니다.
-client = MongoClient('mongodb://test:test@localhost', 27017)
+client = MongoClient('localhost', 27017)  # mongoDB는 27017 포트로 돌아갑니다.
+# client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.dbproject  # 'dbproject'라는 이름의 db를 만들거나 사용합니다.
 
 
@@ -14,21 +14,26 @@ db = client.dbproject  # 'dbproject'라는 이름의 db를 만들거나 사용�
 def home():
     return render_template('index.html')
 
+
 @app.route('/upload')
 def upload():
     return render_template('upload.html')
+
 
 @app.route('/account')
 def account():
     return render_template('account.html')
 
+
 @app.route('/subscribe')
 def subscribe():
     return render_template('subscribe.html')
 
+
 @app.route('/keep')
 def keep():
     return render_template('keep.html')
+
 
 @app.route('/meme', methods=['POST'])
 def post_Meme():
@@ -61,8 +66,11 @@ def post_Meme():
 
 @app.route('/meme', methods=['GET'])
 def read_Memes():
+    keyword_receive = request.args.get('keyword_give', '')
     # 1. mongoDB에서 _id 값을 제외한 모든 데이터 조회해오기(Read)
-    meme_list = list(db.memes.find({}, {'_id': False}))
+    meme_list = list(db.memes.find(
+        {'$or': [{'title': {'$regex': keyword_receive}},
+                 {'comment': {'$regex': keyword_receive}}]}, {'_id': False}))
 
     # 2. memes라는 키 값으로 memes 정보 보내주기
     return jsonify({'result': 'success', 'data': meme_list})
